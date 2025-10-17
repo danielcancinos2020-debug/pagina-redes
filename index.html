@@ -1,1 +1,310 @@
 <h1>Github pages test</h1>
+<HTML:5></HTML:5>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control Minimalista</title>
+    <style>
+        /* 1. Configuración General y Fuente Limpia */
+        * {
+            box-sizing: border-box; /* Hace que el padding no afecte el ancho total */
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #e4bff5; /* Un blanco un poco más suave */
+            color: #333;
+            line-height: 1.6;
+        }
+            
+        h1 {
+            text-align: center;
+            color: #2c3e50; /* Un azul/gris oscuro */
+            margin-top: 30px;
+        }
+        h2 {
+            color: #34495e; /* Un poco más suave que el h1 */
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* 2. El Menú Principal (4 Botones) */
+        .menu-principal {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Espacio entre botones */
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+        .menu-principal button {
+            background-color: #ffffff; /* Fondo blanco */
+            color: #3498DB; /* Color de texto (Azul) */
+            border: 2px solid #3498DB; /* Borde azul */
+            padding: 10px 25px;
+            border-radius: 50px; /* Botones tipo "píldora" */
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600; /* Texto un poco más grueso */
+            transition: all 0.3s ease; /* Transición suave */
+        }
+        .menu-principal button:hover {
+            background-color: #ecf5fb; /* Un azul muy pálido al pasar el ratón */
+        }
+        /* Botón ACTIVO (cuando está seleccionado) */
+        .menu-principal button.activo {
+            background-color: #3498DB; /* Se rellena de azul */
+            color: #ffffff; /* Texto blanco */
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); /* Sombra suave azul */
+        }
+
+        /* 3. Los Paneles de Acción (Contenedores) */
+        .panel-accion {
+            display: none; /* Ocultos por defecto */
+            background: #ffffff;
+            border-radius: 12px; /* Esquinas más redondeadas */
+            padding: 30px; /* Más espacio interno */
+            /* Sombra suave para un efecto "flotante" */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            
+            /* Centramos los paneles y les damos un ancho máximo */
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .panel-accion.visible {
+            display: block;
+        }
+
+        /* 4. Estilos de Formularios (Inputs y Botones de Acción) */
+        form div { 
+            margin-bottom: 20px; 
+        }
+        form label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600;
+            color: #555;
+        }
+        form input[type="text"], 
+        form input[type="email"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; /* Esquinas redondeadas para inputs */
+            transition: border-color 0.3s ease;
+        }
+        /* Resaltado azul al hacer clic (focus) */
+        form input[type="text"]:focus, 
+        form input[type="email"]:focus { 
+            border-color: #3498DB;
+            outline: none; /* Quitamos el feo borde por defecto */
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        /* Botones de acción dentro de los formularios */
+        form button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        form button:hover {
+            opacity: 0.85; /* Efecto simple al pasar el ratón */
+        }
+
+        /* Colores específicos para cada acción */
+        #form-crear button { background-color: #05C18D; } /* Verde (Alta) */
+        #form-eliminar button { background-color: #E74C3C; } /* Rojo (Baja) */
+        #form-editar button { background-color: #F39C12; } /* Naranja (Cambio) */
+        #btn-refrescar-lista { background-color: #3498DB; } /* Azul (Consulta) */
+
+
+        /* 5. Estilo de Tabla Minimalista */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; /* Mantenemos esto para líneas limpias */
+            margin-top: 20px; 
+        }
+        table th, table td { 
+            padding: 15px; 
+            text-align: left;
+            /* El truco minimalista: solo bordes inferiores */
+            border-bottom: 1px solid #eee; 
+        }
+        table th { /* Encabezados de la tabla */
+            color: #3498DB; /* Color azul */
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        /* Quitamos el borde de la última fila */
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Botones de acción dentro de la tabla */
+        .btn-editar, .btn-eliminar {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .btn-editar { background-color: #F39C12; } /* Naranja */
+        .btn-eliminar { background-color: #E74C3C; } /* Rojo */
+
+    </style>
+</head>
+<body>
+
+    <h1>ANALISIS DE REDES l</h1>
+
+    <nav class="menu-principal">
+        <button id="btn-alta" class="nav-btn">Altas</button>
+        <button id="btn-baja" class="nav-btn">Bajas</button>
+        <button id="btn-cambio" class="nav-btn">Cambios</button>
+        <button id="btn-consulta" class="nav-btn">Consultas</button>
+    </nav>
+
+    <main>
+        <section id="panel-bienvenida" class="panel-accion">
+            <h2>Bienvenido al Panel de Gestión</h2>
+            <p>Selecciona una opción del menú de arriba para comenzar.</p>
+        </section>
+        
+        <section id="panel-alta" class="panel-accion">
+            <h2>Panel de Altas (Crear Registro)</h2>
+            <form id="form-crear">
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Ana López" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Ej: ana.lopez@correo.com" required>
+                </div>
+                <button type="submit">Guardar Nuevo Registro</button>
+            </form>
+        </section>
+
+        <section id="panel-baja" class="panel-accion">
+            <h2>Panel de Bajas (Eliminar Registro)</h2>
+            <p>Puedes eliminar un registro desde la tabla de "Consultas" o ingresando el ID aquí abajo.</p>
+            <form id="form-eliminar">
+                <div>
+                    <label for="id-eliminar">ID del Registro a Eliminar:</label>
+                    <input type="text" id="id-eliminar" name="id" placeholder="Ej: 123" required>
+                </div>
+                <button type="submit" id="form-baja-btn">Eliminar por ID</button>
+            </form>
+        </section>
+
+        <section id="panel-cambio" class="panel-accion">
+            <h2>Panel de Cambios (Actualizar Registro)</h2>
+            <p>Puedes editar un registro desde la tabla de "Consultas" o ingresando el ID y los nuevos datos aquí.</p>
+            <form id="form-editar">
+                 <div>
+                    <label for="id-editar">ID del Registro a Modificar:</label>
+                    <input type="text" id="id-editar" name="id" placeholder="Ej: 123" required>
+                </div>
+                <div>
+                    <label for="edit-nombre">Nuevo Nombre:</label>
+                    <input type="text" id="edit-nombre" name="nombre">
+                </div>
+                <div>
+                    <label for="edit-email">Nuevo Email:</label>
+                    <input type="email" id="edit-email" name="email">
+                </div>
+                <button type="submit" id="form-cambio-btn">Actualizar por ID</button>
+            </form>
+        </section>
+
+        <section id="panel-consulta" class="panel-accion visible">
+            <h2>Panel de Consultas (Leer Registros)</h2>
+            
+            <button id="btn-refrescar-lista" style="margin-bottom: 20px;">Cargar/Refrescar Lista</button>
+            
+            <table id="tabla-registros">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla">
+                    <tr>
+                        <td>1</td>
+                        <td>Usuario de Ejemplo 1</td>
+                        <td>ejemplo1@correo.com</td>
+                        <td>
+                            <button class="btn-editar" data-id="1">Editar</button>
+                            <button class="btn-eliminar" data-id="1">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Usuario de Ejemplo 2</td>
+                        <td>ejemplo2@correo.com</td>
+                        <td>
+                            <button class="btn-editar" data-id="2">Editar</button>
+                            <button class="btn-eliminar" data-id="2">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const botonesNav = document.querySelectorAll('.nav-btn');
+            const paneles = document.querySelectorAll('.panel-accion');
+            
+            function resetPaneles() {
+                paneles.forEach(panel => {
+                    panel.classList.remove('visible');
+                });
+                botonesNav.forEach(btn => {
+                    btn.classList.remove('activo');
+                });
+            }
+
+            function mostrarPanel(idPanel) {
+                resetPaneles();
+                
+                const panelAMostrar = document.getElementById(idPanel);
+                const botonActivo = document.getElementById(idPanel.replace('panel', 'btn'));
+
+                if (panelAMostrar) {
+                    panelAMostrar.classList.add('visible');
+                }
+                if (botonActivo) {
+                    botonActivo.classList.add('activo');
+                }
+            }
+
+            // Asignar clics
+            document.getElementById('btn-alta').addEventListener('click', () => mostrarPanel('panel-alta'));
+            document.getElementById('btn-baja').addEventListener('click', () => mostrarPanel('panel-baja'));
+            document.getElementById('btn-cambio').addEventListener('click', () => mostrarPanel('panel-cambio'));
+            document.getElementById('btn-consulta').addEventListener('click', () => mostrarPanel('panel-consulta'));
+            
+            // **NUEVO**: Hacemos que "Consultas" sea el panel activo al cargar
+            // y ocultamos la bienvenida.
+            mostrarPanel('panel-consulta');
+            document.getElementById('panel-bienvenida').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
